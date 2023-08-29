@@ -1,0 +1,96 @@
+# SOLID Design Principles
+
+S - Single Responsibility
+```cpp
+struct FMovie {
+    QString title;
+    std::vector<QString> tags;
+
+    explicit FMovie(const std::vector<QString> &tags) : tags(tags) {}
+    
+    void AddTag(const QString& tag)
+    {
+        static int count =1 ;
+        tags.emplace_back(QString(tag + ":" + QString::number(++count)));
+        qDebug() << tags[0];
+    }
+    
+    void SaveTags(const QString& filename)
+    {
+        std::ofstream ofstream(filename.toStdString());
+        for (auto&item :tags) {
+            ofstream << item.toStdString() << std::endl;
+        }
+    }
+    
+};
+```
+```cpp
+struct FMovie {
+    QString title;
+    std::vector<QString> tags;
+
+    explicit FMovie(const std::vector<QString> &tags) : tags(tags) {}
+
+    void AddTag(const QString &tag) {
+        static int count = 1;
+        tags.emplace_back(QString(tag + ":" + QString::number(++count)));
+        qDebug() << tags[0];
+    }
+
+};
+
+static void SaveTags(const FMovie &movie, const QString &filename) {
+    std::ofstream ofstream(filename.toStdString());
+    for (auto &item: movie.tags) {
+        ofstream << item.toStdString() << std::endl;
+    }
+}
+```
+O - Open Close Principles
+
+L - Liskov Substitution
+Rectangle vs. Square
+
+I - Interface Segregation Principles
+Dont do like
+```cpp
+IMachine
+{
+    virual void Pirnt() = 0; 
+    virual void Scan() = 0; 
+    virual void Fax() = 0; 
+}
+```
+But do 
+```cpp
+struct IPrint()
+{
+    virtual void Pirnt() = 0;
+}
+
+struct IScanner()
+{
+    virtual void Scan() = 0;
+}
+
+struct IFax()
+{
+    virtual void Fax() = 0;
+}
+
+struct Machine : IPrint, ISacnner
+{
+    IPrint& Printer;
+    ISacnner& Sacnner;
+    // Constructor
+    void Print() override
+    {
+        Printer.Print();
+    }
+};
+```
+D - Dependency Inversion Principles
+
+1. High-Level should not depend on a low-level module
+2. Abstractions should not depend on details
