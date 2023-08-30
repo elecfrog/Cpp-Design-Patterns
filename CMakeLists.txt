@@ -10,7 +10,13 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 add_executable(Sparrow-DesignPatterns main.cpp
-        Movie.hpp)
+        Movie.hpp
+        ch2/FacetBuilders/Person.h
+        ch2/FacetBuilders/PersonBuilder.cpp
+        ch2/FacetBuilders/PersonBuilder.h
+        ch2/Builder.hpp
+        ch2/GrooveBuilder.h
+)
 
 target_link_libraries(Sparrow-DesignPatterns
         PRIVATE
