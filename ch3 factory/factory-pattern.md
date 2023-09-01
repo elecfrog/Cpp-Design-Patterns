@@ -81,3 +81,6 @@ public:
 - **Comparison**:
     - Factories are typically used when the creation is a one-step process. It simply returns a fully initialized object.
     - Builders are used when an object needs multiple steps to be created. It can be thought of as a multistep initialization.
+- 
+## Inspiration Future Work
+It was general in the coding process, notice and remember whether should I use it!
