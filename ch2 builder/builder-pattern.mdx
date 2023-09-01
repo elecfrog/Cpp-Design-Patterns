@@ -96,8 +96,8 @@ protected:
     class PersonJobBuilder works();
 };
 
-class PersonAddressBuilder : public PersonBuilder{//...};
-class PersonJobBuilder : public PersonBuilder{//...};
+class PersonAddressBuilder : public PersonBuilder{ ... }; 
+class PersonJobBuilder : public PersonBuilder{ ... };
 
 PersonAddressBuilder PersonBuilder::lives() {
     return PersonAddressBuilder(person);
