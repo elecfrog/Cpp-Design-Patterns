@@ -3,16 +3,16 @@
 #include <sstream>
 #include <memory>
 
-using namespace std;
-
+// Define a class that has a virtual ping method
 struct Pingable {
     virtual ~Pingable() = default;
 
-    virtual wstring ping(const wstring &message) = 0;
+    virtual std::wstring ping(const std::wstring &message) = 0;
 };
 
+// Pong class which implements Pingable and returns a concatenated response
 struct Pong : Pingable {
-    wstring ping(const wstring &message) override {
+    std::wstring ping(const std::wstring &message) override {
         return message + L" pong";
     }
 };
@@ -26,13 +26,14 @@ using namespace web::http;                  // Common HTTP functionality
 using namespace web::http::client;          // HTTP client features
 using namespace concurrency::streams;       // Asynchronous streams
 
+// RemotePong communicates with a remote API to get the response
 struct RemotePong : Pingable {
-    wstring ping(const wstring &message) override {
-        wstring result;
+    std::wstring ping(const std::wstring &message) override {
+        std::wstring result;
         http_client client(U("http://localhost:9149/"));
         uri_builder builder(U("/api/pingpong/"));
         builder.append(message);
-        pplx::task <wstring> task = client.request(methods::GET, builder.to_string())
+        pplx::task <std::wstring> task = client.request(methods::GET, builder.to_string())
                 .then([=](http_response r) {
                     return r.extract_string();
                 });
@@ -41,10 +42,12 @@ struct RemotePong : Pingable {
     }
 };
 
+// Function that tests the ping functionality
 void tryit(Pingable &pp) {
-    wcout << pp.ping(L"ping") << "\n";
+    std::wcout << pp.ping(L"ping") << "\n";
 }
 
+// Testing the functionality
 bool Testing() {
     Pong pp;
     for (int i = 0; i < 3; ++i) {
@@ -52,6 +55,5 @@ bool Testing() {
     }
     return true;
 }
-
 
 int main() { return Testing(); }

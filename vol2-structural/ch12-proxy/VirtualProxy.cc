@@ -3,26 +3,27 @@
 #include <sstream>
 #include <memory>
 
-using namespace std;
-
+// Abstract class representing an Image with a draw function
 struct Image {
     virtual ~Image() = default;
 
     virtual void draw() = 0;
 };
 
+// Bitmap representation of an Image
 struct Bitmap : Image {
-    Bitmap(const string &filename) {
-        cout << "Loading image from " << filename << endl;
+    Bitmap(const std::string &filename) {
+        std::cout << "Loading image from " << filename << std::endl;
     }
 
     void draw() override {
-        cout << "Drawing image" << endl;
+        std::cout << "Drawing image" << std::endl;
     }
 };
 
+// Lazy loading of Bitmap
 struct LazyBitmap : Image {
-    LazyBitmap(const string &filename) : filename(filename) {}
+    LazyBitmap(const std::string &filename) : filename(filename) {}
 
     ~LazyBitmap() { delete bmp; }
 
@@ -34,13 +35,13 @@ struct LazyBitmap : Image {
 
 private:
     Bitmap *bmp{nullptr};
-    string filename;
+    std::string filename;
 };
 
 void draw_image(Image &img) {
-    cout << "About to draw the image" << endl;
+    std::cout << "About to draw the image" << std::endl;
     img.draw();
-    cout << "Done drawing the image" << endl;
+    std::cout << "Done drawing the image" << std::endl;
 }
 
 bool Testing() {
@@ -52,7 +53,6 @@ bool Testing() {
     return true;
 }
 
-int main()
-{
+int main() {
     return Testing();
 }
