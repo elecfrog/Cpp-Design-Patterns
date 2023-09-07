@@ -1,6 +1,4 @@
 #include <vector>
-#include <iostream>
-
 using namespace std;
 
 /*
@@ -82,5 +80,6 @@ vector<vector<int>> generateMatrix(int n) {
 
 int main() {
     auto mat = generateMatrix(5);
+    
     return 0;
 }
