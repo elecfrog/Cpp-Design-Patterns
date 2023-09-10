@@ -1,6 +1,6 @@
 # SOLID Design Principles
 
-S - Single Responsibility
+## S - Single Responsibility
 ```cpp
 struct FMovie {
     QString title;
@@ -47,12 +47,12 @@ static void SaveTags(const FMovie &movie, const QString &filename) {
     }
 }
 ```
-O - Open Close Principles
+## O - Open Close Principles
 
-L - Liskov Substitution
+## L - Liskov Substitution
 Rectangle vs. Square
 
-I - Interface Segregation Principles
+## I - Interface Segregation Principles
 Dont do like
 ```cpp
 IMachine
@@ -90,7 +90,21 @@ struct Machine : IPrint, ISacnner
     }
 };
 ```
-D - Dependency Inversion Principles
+## D - Dependency Inversion Principles
 
 1. High-Level should not depend on a low-level module
 2. Abstractions should not depend on details
+
+
+## Gamma Categorization
+
+Creation Patterns
+Deal with creation of objects
+Explicit (Constructor) vs.Implicit(DI, relection, etc..)
+
+Structural Pattens
+Concerned with the structure, class members
+wrappers, interfaces, API design
+
+Behavioral Patterns
+No central theme, for specific problem

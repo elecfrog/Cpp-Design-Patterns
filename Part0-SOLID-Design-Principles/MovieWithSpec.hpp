@@ -9,7 +9,7 @@
 #include <utility>
 
 namespace elf {
-    struct FMovie {
+    struct Movie {
         QString unicode;
         QString title;
         QString pubDate; // formal name releaseDate
@@ -25,7 +25,7 @@ namespace elf {
         QString localFileLink;  // formal name localFile
     };
 
-    static void SaveTags(const FMovie &movie, const QString &filename) {
+    static void SaveTags(const Movie &movie, const QString &filename) {
         std::ofstream ofstream(filename.toStdString());
         for (auto &item: movie.tags) {
             ofstream << item.toStdString() << std::endl;
@@ -33,7 +33,7 @@ namespace elf {
     }
 
     // separation of concerns
-    static void SaveTagsToDatabase(const FMovie &movie, const QString &filename) {
+    static void SaveTagsToDatabase(const Movie &movie, const QString &filename) {
 
         // Database Streaming
         //    std::ofstream ofstream(filename.toStdString());
@@ -42,8 +42,8 @@ namespace elf {
         //    }
     }
 
-    static std::vector<FMovie *> FilterByUnicode(const std::vector<FMovie *> &movies, const QString &unicode) {
-        std::vector<FMovie *> ret;
+    static std::vector<Movie *> FilterByUnicode(const std::vector<Movie *> &movies, const QString &unicode) {
+        std::vector<Movie *> ret;
         for (auto &m: movies) {
             if (m->unicode == unicode)
                 ret.emplace_back(m);
@@ -52,8 +52,8 @@ namespace elf {
         return ret;
     }
 
-    static std::vector<FMovie *> FilterByActor(const std::vector<FMovie *> &movies, const QString &actor) {
-        std::vector<FMovie *> ret;
+    static std::vector<Movie *> FilterByActor(const std::vector<Movie *> &movies, const QString &actor) {
+        std::vector<Movie *> ret;
         for (auto &m: movies) {
             if (m->actors.find(actor) != m->actors.end()) {
                 ret.emplace_back(m);
@@ -62,8 +62,8 @@ namespace elf {
         }
     }
 
-    static std::vector<FMovie *> FilterByTag(const std::vector<FMovie *> &movies, const QString &tag) {
-        std::vector<FMovie *> ret;
+    static std::vector<Movie *> FilterByTag(const std::vector<Movie *> &movies, const QString &tag) {
+        std::vector<Movie *> ret;
         for (auto &m: movies) {
             if (m->tags.find(tag) != m->tags.end()) {
                 ret.emplace_back(m);
@@ -72,9 +72,9 @@ namespace elf {
         }
     }
 
-    static std::vector<FMovie *>
-    FilterByActorAndTag(const std::vector<FMovie *> &movies, const QString &actor, const QString &tag) {
-        std::vector<FMovie *> ret;
+    static std::vector<Movie *>
+    FilterByActorAndTag(const std::vector<Movie *> &movies, const QString &actor, const QString &tag) {
+        std::vector<Movie *> ret;
         for (auto &m: movies) {
             if ((m->tags.find(tag) != m->tags.end()) && (m->actors.find(actor) != m->actors.end())) {
                 ret.emplace_back(m);
@@ -95,10 +95,10 @@ namespace elf {
         virtual std::vector<T *> FilterFunc(const std::vector<T *> &items, Specification<T> &spec) = 0;
     };
 
-    struct MovieFilter : Filter<FMovie> {
-        std::vector<FMovie *>
-        FilterFunc(const std::vector<FMovie *> &movies, Specification<FMovie> &spec) override {
-            std::vector<FMovie *> ret;
+    struct MovieFilter : Filter<Movie> {
+        std::vector<Movie *>
+        FilterFunc(const std::vector<Movie *> &movies, Specification<Movie> &spec) override {
+            std::vector<Movie *> ret;
             for (auto &item: movies) {
                 if (spec.IsSatisfied(item)) {
                     ret.emplace_back(item);
@@ -108,22 +108,22 @@ namespace elf {
         }
     };
 
-    struct ActorSpecification : Specification<FMovie> {
+    struct ActorSpecification : Specification<Movie> {
         QString actor;
 
         explicit ActorSpecification(const QString &actor) : actor(actor) {}
 
-        bool IsSatisfied(FMovie *movie) override {
+        bool IsSatisfied(Movie *movie) override {
             return (movie->actors.find(actor) != movie->actors.end());
         }
     };
 
-    struct TagSpecification : Specification<FMovie> {
+    struct TagSpecification : Specification<Movie> {
         QString tag;
 
         explicit TagSpecification(const QString &tag) : tag(tag) {}
 
-        bool IsSatisfied(FMovie *movie) override {
+        bool IsSatisfied(Movie *movie) override {
             return (movie->tags.find(tag) != movie->tags.end());
         }
     };
