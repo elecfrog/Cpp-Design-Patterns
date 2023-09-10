@@ -85,4 +85,10 @@ namespace elf {
         // The raw pointer to the managed object
         Pointer raw;
     };
+
+//    template<typename T>
+//    UniquePtr<T> MakeUniquePtr(T *ptr) noexcept
+//    {
+//        new UniquePtr<T>;
+//    }
 }

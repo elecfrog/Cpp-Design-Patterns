@@ -1,14 +1,16 @@
 #include <memory>
 #include <iostream>
-#include "UniquePtr.hpp"
-#include "UniqueDeletePtr.hpp"
-#include "UniqueTuplePtr.hpp"
+#include <functional>
+#include "UniquePointer/UniquePtr.hpp"
+#include "UniquePointer/UniqueDeletePtr.hpp"
+#include "UniquePointer/UniqueTuplePtr.hpp"
 
 using namespace std;
 
 void funcDeleter(int *p) { delete p; }
 
 auto statelessLambdaDeleter = [](int *p) { delete p; };
+std::function<void(int *)> foo = [](int *p) { delete p; };
 
 int main() {
 
@@ -19,8 +21,9 @@ int main() {
         cout << x << "XX" << endl;
     };
 
-    elf::UniquePtr<int> uptr{new int{0}};
-    
+    elf::UniquePtr<int> uptr{new int(0)};
+    uptr.release();
+
     unique_ptr<int, decltype(statelessLambdaDeleter)> udptrlambda(new int, statelessLambdaDeleter);
     unique_ptr<int, decltype(&funcDeleter)> udptrFunc(new int, &funcDeleter);
 
@@ -31,8 +34,10 @@ int main() {
     elf::UniqueTuplePtr<int, decltype(statelessLambdaDeleter)> utptr0{new int, statelessLambdaDeleter};
     elf::UniqueTuplePtr<int, decltype(&funcDeleter)> utptr1{new int, funcDeleter};
 
+    string a;
 
-    cout << "sizeof(uptr) is " << sizeof(uptr) << endl /* 8 byte with no any question! */
+    cout << "sizeof(foo) is " << sizeof(foo) << endl /* 8 byte with no any question! */
+         << "sizeof(uptr) is " << sizeof(uptr) << endl /* 8 byte with no any question! */
          << "sizeof(statelessLambdaDeleter) is " << sizeof(statelessLambdaDeleter) << endl /* 1 byte*/
          << "sizeof(statefulLambdaDeleter) is " << sizeof(statefulLambdaDeleter) << endl /* 4 byte*/
          << "sizeof(&funcDeleter) is " << sizeof(&funcDeleter) << endl /* 8 byte with no any question! */
@@ -43,6 +48,6 @@ int main() {
          << "sizeof(unique_ptr) is " << sizeof(udptrlambda) << endl /* std::unique_ptr => GCC && MSVC => 8 bytes*/
          << "sizeof(utptr0) is " << sizeof(utptr0) << endl /* MSVC => 16 bytes GCC =>  8 bytes*/
          << "sizeof(utptr1) is " << sizeof(utptr1) << endl; /* MSVC => 16 bytes GCC => 16 bytes*/
-         
+
     return 0;
 }

@@ -85,7 +85,7 @@ namespace elf {
             deleter = std::move(ptr.getDeleter());
             return *this;
         }
-
+        
     private:
         // The raw pointer to the managed object
         Pointer raw;

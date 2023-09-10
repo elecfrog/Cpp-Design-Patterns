@@ -78,6 +78,10 @@ namespace elf {
             return SharedPtr<T>();
         }
 
+        bool expired() const noexcept {
+            return this->refCount->getWeakCount() == 0;
+        }
+        
     private:
         RefCount<T> *refCount{nullptr};
     };
