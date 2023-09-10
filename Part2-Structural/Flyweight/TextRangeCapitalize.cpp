@@ -86,7 +86,7 @@ private:
     std::vector<TextRange> formatting;
 };
 
-bool Testing() {
+int main() {
     FormattedText ft("This is a brave new world");
     // Capitalize the word "brave"
     ft.capitalize(10, 15);
@@ -96,10 +96,5 @@ bool Testing() {
     // Capitalize the word "brave"
     bft.get_range(10, 15).capitalize = true;
     std::cout << bft << std::endl;
-
-    return true;
-}
-
-int main() {
-    return Testing();
+    return 0;
 }
